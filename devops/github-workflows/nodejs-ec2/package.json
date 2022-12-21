@@ -1,0 +1,12 @@
+{
+  "name": "nodejs-ec2",
+  "version": "1.0.0",
+  "description": "Set the following secrets in github repository settings   * <code>HOST_NAME</code> * <code>HOST</code> * <code>HOST_KEY</code>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
