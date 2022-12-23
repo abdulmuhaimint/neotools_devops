@@ -35,4 +35,4 @@ jobs:
       - name: scp to ec2instance
         run: |
           scp dist.tar.gz ${{ secrets.VM_USERNAME}}@${{ secrets.VM_KNOWN_HOSTS }}:${{ secrets.TARGET_PATH }}
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ secrets.TARGET_PATH }};tar -xzvf dist.tar.gz; rm dist.tar.gz;export PATH=$PATH:'/home/ubuntu/.nvm/versions/node/v16.18.0/bin'; source ~/.bashrc;npm run prisma:generate:prod; pm2 restart 0;"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ secrets.TARGET_PATH }};tar -xzvf dist.tar.gz; rm dist.tar.gz;export PATH=$PATH:'/home/ubuntu/.nvm/versions/node/v16.18.0/bin'; source ~/.bashrc; pm2 restart 0;"

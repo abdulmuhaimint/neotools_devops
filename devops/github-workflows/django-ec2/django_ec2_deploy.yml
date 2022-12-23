@@ -1,0 +1,33 @@
+name: Deploy to aws ec2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.VM_SSH_KEY  }}
+            HOSTNAME : ${{ secrets.VM_HOST  }}
+            USER_NAME : ${{secrets.VM_USERNAME }} 
+            TARGET_PATH: ${{secrets.TARGET_PATH}} 
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -tt -i private_key ${USER_NAME}@${HOSTNAME} '
+            cd ${TARGET_PATH}
+            git reset --hard HEAD
+            git pull
+            pip install -r requirements.txt
+            python manage.py collectstatic --noinput
+            python manage.py makemigrations
+            python manage.py migrate
+            echo "completed git pull and pip install"
+            sudo systemctl restart gunicorn.socket
+            sudo systemctl restart gunicorn.service
+            sudo systemctl restart nginx
+          '
