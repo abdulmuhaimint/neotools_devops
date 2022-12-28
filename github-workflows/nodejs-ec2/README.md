@@ -7,5 +7,4 @@ VM_USERNAME
 VM_HOST
 TARGET_PATH
 ```
-
-Add project specific commands after the scp command.
+For project specific customization refer to the commented areas in the yml file 

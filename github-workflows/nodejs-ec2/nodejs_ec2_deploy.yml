@@ -1,8 +1,9 @@
-name: Build and deploy to prod env
+name: Build and deploy
 
 on:
   push:
-    branches: [master]
+  # target branch name 
+    branches: [branchname]
 
 jobs:
   DeployProd:
@@ -11,14 +12,15 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@main
 
-      - name: Build Backend
+      - name: Build
         run: |
-          sudo npm i -g pm2
-          sudo npm cache verify
-          sudo npm install
-          sudo npm run build:prod
+          sudo npm ci
+          # add project specific build commands
+
       - name: zip dist folder
-        run: tar -czvf dist.tar.gz dist
+        run: |
+          # uncomment below if build step is present
+          # tar -czvf dist.tar.gz dist
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -34,5 +36,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ secrets.TARGET_PATH }};git pull;source ~/.nvm/nvm.sh;npm install --force;"
       - name: scp to ec2instance
         run: |
-          scp dist.tar.gz ${{ secrets.VM_USERNAME}}@${{ secrets.VM_KNOWN_HOSTS }}:${{ secrets.TARGET_PATH }}
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} "cd ${{ secrets.TARGET_PATH }};tar -xzvf dist.tar.gz; rm dist.tar.gz;export PATH=$PATH:'/home/ubuntu/.nvm/versions/node/v16.18.0/bin'; source ~/.bashrc; pm2 restart 0;"
+          # uncomment below if build step is present
+          # scp dist.tar.gz ${{ secrets.VM_USERNAME}}@${{ secrets.VM_KNOWN_HOSTS }}:${{ secrets.TARGET_PATH }}
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} `
+          cd ${{ secrets.TARGET_PATH }}
+          # uncomment below if build step is present
+          # tar -xzvf dist.tar.gz
+          # rm dist.tar.gz
+          export PATH=$PATH:'/home/ubuntu/.nvm/versions/node/$(nvm current)/bin'
+          source ~/.bashrc
+          pm2 restart 0
+          '
