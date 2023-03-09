@@ -38,7 +38,7 @@ jobs:
           # uncomment below if build step is present
           # scp dist.tar.gz -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME}:${{ secrets.TARGET_PATH }}
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USERNAME }}@${{ secrets.VM_HOST }} `
+          ssh -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME} `
           cd ${{ secrets.TARGET_PATH }}
           # uncomment below if build step is present
           # tar -xzvf dist.tar.gz
