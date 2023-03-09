@@ -36,9 +36,9 @@ jobs:
             npm install --force
           '
           # uncomment below if build step is present
-          # scp dist.tar.gz -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME}:${{ secrets.TARGET_PATH }}
+          # scp dist.tar.gz -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}:${{ secrets.TARGET_PATH }}
           
-          ssh -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME} `
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} `
           cd ${{ secrets.TARGET_PATH }}
           # uncomment below if build step is present
           # tar -xzvf dist.tar.gz
