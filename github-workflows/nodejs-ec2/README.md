@@ -1,5 +1,5 @@
 # Deploy nodejs project to ec2  
-Set the following secrets in github repository settings
+Set the following secrets in github repository settings  
 Contact devops team if you dont have access
 ```
 VM_SSH_KEY : ssh private key of ec2 server
